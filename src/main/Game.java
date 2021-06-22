@@ -5,7 +5,13 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.swing.JFrame;
+
+import entity.Crab;
+import entity.Spawner;
 
 public class Game extends Canvas implements Runnable {
 
@@ -13,12 +19,24 @@ public class Game extends Canvas implements Runnable {
 	public static int WIDTH = 480;
 	public static int HEIGHT = 480;
 
+	public static List<Crab> crabs;
+	private Spawner spawner;
+
 	public Game() {
 		this.setPreferredSize(new Dimension(WIDTH, HEIGHT));
+		crabs = new ArrayList<>();
+
+		crabs.add(new Crab(16, 16));
+
+		spawner = new Spawner();
 	}
 
 	public void tick() {
+		spawner.tick();
 
+		for (int i = 0; i < crabs.size(); i++) {
+			crabs.get(i).tick();
+		}
 	}
 
 	public void render() {
@@ -35,6 +53,11 @@ public class Game extends Canvas implements Runnable {
 		g.fillOval(WIDTH / 2 - 35, HEIGHT / 2 - 35, 70, 70);
 		g.setColor(new Color(193, 140, 86));
 		g.fillOval(WIDTH / 2 - 25, HEIGHT / 2 - 25, 50, 50);
+
+		for (int i = 0; i < crabs.size(); i++) {
+			crabs.get(i).render(g);
+		}
+
 		g.dispose();
 		bs.show();
 	}
