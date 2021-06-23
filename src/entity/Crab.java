@@ -37,7 +37,7 @@ public class Crab {
 		}
 
 		animation();
-
+		checkCollisionWithMouse();
 	}
 
 	public void render(Graphics g) {
@@ -53,6 +53,21 @@ public class Crab {
 
 			if (curIndex >= maxIndex) {
 				curIndex = 0;
+			}
+		}
+	}
+
+	private void checkCollisionWithMouse() {
+		if (Game.isPressed) {
+			Game.isPressed = false;
+
+			if (Game.mx >= x && Game.mx <= x + 40) {
+				if (Game.my >= y && Game.my <= y + 40) {
+					Game.crabs.remove(this);
+					Game.score += 20;
+					Game.smokes.add(new Smoke((int) x, (int) y));
+					return;
+				}
 			}
 		}
 	}
